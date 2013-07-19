@@ -31,3 +31,12 @@ This config file provides sphinx search server all information to create an its 
 * start sphinx search with `# /etc/init.d/sphinxsearch start`
 
 Done!
+
+Acknowledgements
+----------------
+I first integrated sphinx search into Magento 1.4.X.X with the help of this post:  
+http://tonyhb.com/using-sphinx-within-magento-plus-optimising-search-result-rankings-weights-and-relevancy  
+You can find this integration by user tonyhb here on github:  
+https://gist.github.com/2727341  
+I turned it into a full extension since then.
+
