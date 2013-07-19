@@ -1,0 +1,43 @@
+source magento_fulltext {
+	type = mysql
+
+	# Host details - ensure you update this to match your settings
+	sql_host = localhost
+	sql_user = 
+	sql_pass = 
+	sql_db   = 
+	sql_port = 3306
+	sql_sock = /var/run/mysqld/mysqld.sock          # Either leave this out for TCP (slightly slower) or update to your sock path!
+
+	# Core settings - this is tuned to extension table layout
+	sql_query_pre  = SET NAMES utf8               # We're using UTF-8 encoding so run this before
+	sql_query      = SELECT product_id, name, name_attributes, category, data_index FROM sphinx_catalogsearch_fulltext
+	sql_query_info = SELECT product_id, name, name_attributes, category, data_index FROM sphinx_catalogsearch_fulltext WHERE product_id=$id
+}
+
+index fulltext {
+	source = magento_fulltext
+	path   = /var/lib/sphinxsearch/data/magento.sphinx.index     # Feel free to change
+
+	#morphology   = libstemmer_german, metaphone
+	morphology   = stem_en
+	#wordforms    = /etc/sphinxsearch/stemmingoverride.txt
+	min_word_len = 1                               # Indexes all words
+	charset_type = utf-8
+	blend_chars  = -                               # This presumes people won't type a hyphen into the search bar: quite likely
+	blend_mode   = trim_both                       #
+	html_strip   = 1                               # Just in case anyone tries to get clever in the admin panel and use HTML
+}
+
+indexer {
+	mem_limit = 256M                              # Change this to something that suits your server
+}
+
+searchd {
+	pid_file = /var/run/sphinxsearch/searchd.pid
+	compat_sphinxql_magics = 0
+	log		= /var/log/sphinxsearch/searchd.log
+	read_timeout    = 5
+	client_timeout  = 10                           # Make sure you get rid of the 5 minute timeout!
+	preopen_indexes = 1
+}
