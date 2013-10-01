@@ -60,7 +60,7 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
             // Get the product name.
             if (is_array($index['name']))
             {
-                    $name = $index['name'][0]; // Use the configurable product's name
+                    $name = $index['name'][$entity_id]; // Use the configurable product's name
             }
             else
             {
@@ -87,7 +87,7 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
                             else
                             {
                                     // The first time we see this add the name to start.
-                                    $name_attributes[] = $name.' '.$item_value;
+                                    $name_attributes[$key] = $name.' '.$item_value;
                             }
                     }
             }
