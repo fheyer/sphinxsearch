@@ -142,11 +142,7 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_
             $index['in_stock'] = $productData['in_stock'];
         }
 
-        if ($this->_engine) {
-            return $this->_engine->prepareEntityIndex($index, $this->_separator, $productData['entity_id']);
-        }
-
-        return Mage::helper('sphinxsearch')->prepareIndexdata($index, $this->_separator, $productData['entity_id']);
+        return $this->_engine->prepareEntityIndex($index, $this->_separator, $productData['entity_id']);
     }	
 	
 }

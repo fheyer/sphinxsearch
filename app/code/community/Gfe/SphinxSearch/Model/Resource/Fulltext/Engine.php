@@ -73,6 +73,6 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext_Engine extends Mage_CatalogSearch
      */
     public function prepareEntityIndex($index, $separator = ' ', $entity_id = NULL)
     {
-		return Mage::helper('catalogsearch')->prepareIndexdata($index, $separator, $entity_id);
+        return Mage::helper('sphinxsearch')->prepareIndexdata($index, $separator, $entity_id);		
     }
 }
