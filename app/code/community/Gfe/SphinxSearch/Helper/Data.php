@@ -92,31 +92,21 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
                     }
             }
 
-            $category = '';
-            if ($entity_id)
+            // Get categories
+			$categories = array();
+			if ($entity_id)
             {
-                    $entity_id = (int) $entity_id;
-                    $read	  = Mage::getSingleton('core/resource')->getConnection('core/read');
-
-                    // Get categories
-                    $data = $read->fetchRow("
-                            SELECT value FROM `catalog_category_entity_varchar` `ccev`
-                                    JOIN `catalog_category_entity` `cce` ON `cce`.`entity_id` = `ccev`.`entity_id`
-                                    JOIN `catalog_category_product` `ccp` on `ccp`.`category_id` = `cce`.`entity_id`
-                            WHERE `ccp`.`product_id` = {$entity_id}
-                                    AND `ccev`.`attribute_id` = 33
-                            ORDER BY `cce`.`level` DESC 
-                            LIMIT 1"
-                    );
-
-                    $category = $data['value'];
+					$mProduct = Mage::getModel('catalog/product')->load((int) $entity_id);
+					foreach ($mProduct->getCategoryCollection()->addNameToResult() as $item) {
+						$categories[] = $item->getName();
+					}
             }
 
             $data = array(
-                    'name'			=> $name,
+                    'name'			  => $name,
                     'name_attributes' => join('. ', $name_attributes),
                     'data_index'	  => join($separator, $_index),
-                    'category'		=> $category,
+                    'category'		  => join('|', $categories),
             );
 
             return $data;
