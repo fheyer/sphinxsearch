@@ -20,8 +20,8 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
         $sphinx->SetMatchMode(SPH_MATCH_EXTENDED2);
         $sphinx->setFieldWeights(array(
             'name' => 7,
-            //'category' => 1,
-            //'name_attributes' => 1
+            'category' => 1,
+            'name_attributes' => 1,
             'data_index' => 3
         ));
         $sphinx->setLimits(0, 200, 1000, 5000);
