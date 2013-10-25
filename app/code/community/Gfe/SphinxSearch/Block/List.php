@@ -1,9 +1,12 @@
 <?php
 
 /**
+ * This is some experimental code
+ * You can use this Block to include a list of products e.g. on a 404 error page
+ * The products are searched by the url which led to the 404 page
+ * 
  * Break calling URL into keywords and try to find products with these keywords
  * 
- * or extend Amasty_Sorting_Block_Catalog_Product_List in 4l? 
  */
 class Gfe_SphinxSearch_Block_List extends Mage_Catalog_Block_Product_List {
     
