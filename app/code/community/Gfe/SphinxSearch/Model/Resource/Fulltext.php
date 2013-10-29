@@ -66,7 +66,21 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_
                                         $weight,
                                         $weight
                                 );
-                                $this->_getWriteAdapter()->query($sql);
+								try {
+									$this->_getWriteAdapter()->query($sql);
+								} catch (Zend_Db_Statement_Exception $e) {
+									/*
+									 * if the sphinx index is out of date and returns
+									 * product ids which are no longer in the database
+									 * integrity contraint exceptions are thrown.
+									 * we catch them here and simply skip them.
+									 * all other exceptions are forwarded
+									 */
+									$message = $e->getMessage();
+									if (strpos($message, 'SQLSTATE[23000]: Integrity constraint violation') === FALSE) {
+										throw $e;
+									}
+								}
                         }
                 }
             }
