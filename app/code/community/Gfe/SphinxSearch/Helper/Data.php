@@ -8,8 +8,8 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
         // Connect to our Sphinx Search Engine and run our queries
         $sphinx = new SphinxClient();
 		
-		$host = Mage::getStoreConfigFlag('sphinxsearch/active/host');
-		$port = Mage::getStoreConfigFlag('sphinxsearch/active/port');
+		$host = Mage::getStoreConfig('sphinxsearch/server/host');
+		$port = Mage::getStoreConfig('sphinxsearch/server/port');
 		if (empty($host)) {
 			return $sphinx;
 		}
