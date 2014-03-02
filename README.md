@@ -5,7 +5,7 @@ This magento extension provides integration for Magento CE with a sphinx search 
 
 Versions
 --------
-sphinxsearch was tested on Magento CE version 1.7.X.X.
+sphinxsearch was tested on Magento CE version 1.7.X.X and 1.8.0.0.
 It probably works with 1.6.X.X too, but i haven't tested it yet.
 Earlier versions of Magento won't work without changes in the extension code. 
 
@@ -27,7 +27,7 @@ Just a quick guide for Debian GNU/Linux or Ubuntu:
 * Then copy sphinx.conf.example to /etc/sphinxsearch/sphinx.conf and edit according to your database configuration.
 This config file provides sphinx search server all information to create an its index for all products in your magento shop.
 * Edit /etc/default/sphinxsearch (change NO to YES)
-* re-create sphinx' index: `# indexer --rotate --all`
+* re-create sphinx' index: `# indexer --all`
 * start sphinx search with `# /etc/init.d/sphinxsearch start`
 
 Done!
