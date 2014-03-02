@@ -58,13 +58,13 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
             }
 
             // Get the product name.
-            if (is_array($index['name']))
-            {
+            $name = '';
+            if (isset($index['name'])) {
+                if (is_array($index['name'])) {
                     $name = $index['name'][$entity_id]; // Use the configurable product's name
-            }
-            else
-            {
+                } else {
                     $name = $index['name']; // Use the simple product's name
+                }
             }
 
             // Combine the name with each non-standard attribute
