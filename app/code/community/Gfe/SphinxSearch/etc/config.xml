@@ -64,6 +64,7 @@
             <server>
                 <host>localhost</host>
                 <port>9312</port>
+                <index></index>                
             </server>
         </sphinxsearch>
     </default>	

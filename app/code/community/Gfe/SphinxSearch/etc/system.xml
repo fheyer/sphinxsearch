@@ -64,6 +64,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </port>
+                        <index translate="label">
+                            <label>Index</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Empty by default! If empty all indices on server are queried. You can select a certain index on the server by inserting its name in this field.]]></comment>                            
+                        </index>                        
                     </fields>
                 </server>
             </groups>

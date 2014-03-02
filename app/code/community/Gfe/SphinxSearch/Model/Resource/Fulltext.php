@@ -41,7 +41,13 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_
 		
             $sphinx = Mage::helper('sphinxsearch')->getSphinxAdapter();
 
-            $sphinx->AddQuery($queryText, "fulltext");
+            $index = Mage::getStoreConfig('sphinxsearch/server/index');
+       		if (empty($index)) {
+                $sphinx->AddQuery($queryText);                
+            } else {
+                $sphinx->AddQuery($queryText, $index);
+            }
+            
             $results = $sphinx->RunQueries();
 
             // Loop through our Sphinx results
