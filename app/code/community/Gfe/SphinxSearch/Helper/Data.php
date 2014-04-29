@@ -7,27 +7,34 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
 
         // Connect to our Sphinx Search Engine and run our queries
         $sphinx = new SphinxClient();
-		
-		$host = Mage::getStoreConfig('sphinxsearch/server/host');
-		$port = Mage::getStoreConfig('sphinxsearch/server/port');
-		if (empty($host)) {
-			return $sphinx;
-		}
-		if (empty($port)) {
-			$port = 9312;			
+        
+	$host = Mage::getStoreConfig('sphinxsearch/server/host', Mage::app()->getStore()->getStoreId());
+	$port = Mage::getStoreConfig('sphinxsearch/server/port', Mage::app()->getStore()->getStoreId());        
+
+	if (empty($host)) {
+		return $sphinx;
+	}
+	if (empty($port)) {
+		$port = 9312;			
         }		
-        $sphinx->SetServer($host, $port);
+        $sphinx->SetServer($host, $port); //$sphinx->setServer('/tmp/searchd.sock');
         $sphinx->SetMatchMode(SPH_MATCH_EXTENDED2);
-        $sphinx->setFieldWeights(array(
-            'name' => 7,
-            'category' => 1,
-            'name_attributes' => 1,
-            'data_index' => 3
-        ));
-        $sphinx->setLimits(0, 200, 1000, 5000);
+
+	$name_field_weight		= (int)Mage::getStoreConfig('sphinxsearch/active/name_field_weight', Mage::app()->getStore()->getStoreId());
+	$category_field_weight		= (int)Mage::getStoreConfig('sphinxsearch/active/category_field_weight', Mage::app()->getStore()->getStoreId());
+	$nameattributes_field_weight	= (int)Mage::getStoreConfig('sphinxsearch/active/nameattributes_field_weight', Mage::app()->getStore()->getStoreId());
+	$dataindex_field_weight		= (int)Mage::getStoreConfig('sphinxsearch/active/dataindex_field_weight', Mage::app()->getStore()->getStoreId());
+	$sphinx->setFieldWeights(array(
+		'name'			=> $name_field_weight,
+		'category'		=> $category_field_weight,
+		'name_attributes'	=> $nameattributes_field_weight,
+		'data_index'		=> $dataindex_field_weight
+	));
+	$sphinx->setLimits(0, 200, 1000, 5000);
 
         // SPH_RANK_PROXIMITY_BM25 ist default
-        $sphinx->SetRankingMode(SPH_RANK_SPH04, ""); // 2nd parameter is rank expr?
+        //$sphinx->SetRankingMode(SPH_RANK_SPH04, ""); // 2nd parameter is rank expr?
+	$sphinx->SetRankingMode(SPH_RANK_SPH04);
         
         return $sphinx;
     }
