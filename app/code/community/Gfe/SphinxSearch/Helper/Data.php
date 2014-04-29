@@ -51,7 +51,7 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
 
                     // As long as this isn't a standard attribute use it in our 
                     // concatenated column.
-                    if ( ! in_array($key, array('sku', 'name', 'description', 'short_description', 'meta_keywords', 'meta_title')))
+                    if ( ! in_array($key, array('cobay_ham', 'sku', 'name', 'description', 'short_description', 'meta_keywords', 'meta_title')))
                     {
                             $_attributes[$key] = $value;
                     }
@@ -99,22 +99,13 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
                     }
             }
 
-            // Get categories
-			$categories = array();
-			if ($entity_id)
-            {
-					$mProduct = Mage::getModel('catalog/product')->load((int) $entity_id);
-					foreach ($mProduct->getCategoryCollection()->addNameToResult() as $item) {
-						$categories[] = $item->getName();
-					}
-            }
 
-            $data = array(
-                    'name'			  => $name,
-                    'name_attributes' => join('. ', $name_attributes),
-                    'data_index'	  => join($separator, $_index),
-                    'category'		  => join('|', $categories),
-            );
+	$data = array(
+		'name'		  	=> $name,
+		'name_attributes' 	=> implode('. ', $name_attributes),
+		'data_index'	  	=> implode($separator, $_index),
+		'category'	  	=> implode('|', $index['categories']),
+	);
 
             return $data;
     }	
