@@ -161,6 +161,14 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_
         if (isset($productData['in_stock'])) {
             $index['in_stock'] = $productData['in_stock'];
         }
+        
+        $categories = array();
+        if ($productData['entity_id']) {
+        	foreach (Mage::getModel('catalog/product')->load((int) $productData['entity_id'])->getCategoryCollection()->setStoreId($storeId)->addNameToResult() as $item) {
+        		$categories[] = $item->getName();
+        	}
+        }
+        $index['categories'] = $categories;
 
         return $this->_engine->prepareEntityIndex($index, $this->_separator, $productData['entity_id']);
     }	
