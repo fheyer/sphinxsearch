@@ -13,6 +13,12 @@ Installation
 ------------
 * Use modman (https://github.com/colinmollenhour/modman) for easy installation of this extension.
 Integration with magento connect will be provided in the near future.
+* If you don't want to use modman you can install the extension manually instead:
+  * Just copy the following directory with all contained files and subdirs to your shop root directory. Use this exact path, create subdirs if necessary!
+    * `app/code/community/Gfe/SphinxSearch`
+  * Also copy the following 2 files to your shop directory:
+    * `app/etc/modules/Gfe_SphinxSearch.xml`
+    * `lib/sphinxapi.php`
 * Logout from magento backend to execute extension setup files.
 * Login to backend to configure sphinxsearch under Configuration/Catalog/Sphinx Search Engine.
 * Recreate index catalog_search
