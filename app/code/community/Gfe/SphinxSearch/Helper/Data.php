@@ -26,7 +26,9 @@ class Gfe_SphinxSearch_Helper_Data extends Mage_Core_Helper_Abstract {
 			'data_index'      => $dataindex_field_weight,
 		]);
 		$sphinx->setLimits(0, 200, 1000, 5000);
-		$sphinx->setRankingMode(SphinxClient::SPH_RANK_EXPR, '@count asc');
+		// 랭킹모드설명, http://sphinxsearch.com/docs/current/builtin-rankers.html
+		// $sphinx->setRankingMode(SphinxClient::SPH_RANK_EXPR, '@count asc');
+		$sphinx->setRankingMode(SphinxClient::SPH_RANK_SPH04, '');
 
 		return $sphinx;
 	}
