@@ -500,7 +500,8 @@ class SphinxClient
 	function SetServer ( $host, $port = 0 )
 	{
 		assert ( is_string($host) );
-		if ( $host[0] == '/')
+		/* unix:///var/run/sphinxsearch/searchd.sock */
+		if ( substr($host, 0, 1) == '/')
 		{
 			$this->_path = 'unix://' . $host;
 			return;
