@@ -3,12 +3,11 @@
 	"type": "magento-module",
 	"license":"OSL-3.0",
 	"description": "sphinxsearch for magento",
-	"authors":[
-        {
-            "name":"Kim Hyun",
-            "email":"cobays@gmail.com"
-        }
-    ],
+
+    "require": {
+      "gigablah/sphinxphp": "2.0.8"
+    },
+
     "extra": {
     	"map": [
     		["app/code/community/Gfe/SphinxSearch", "app/code/community/Gfe/SphinxSearch"],
