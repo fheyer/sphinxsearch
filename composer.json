@@ -5,7 +5,7 @@
 	"description": "sphinxsearch for magento",
 
     "require": {
-      "gigablah/sphinxphp": "2.0.8"
+      "hgati/sphinx-client": "dev-master"
     },
 
     "extra": {
