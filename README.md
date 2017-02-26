@@ -5,7 +5,7 @@ This magento extension provides integration for Magento CE with a sphinx search 
 
 Versions
 --------
-sphinxsearch was tested on Magento CE version 1.7.X.X and 1.8.0.0.
+sphinxsearch was tested on Magento CE version 1.7.X.X, 1.8.0.0 and 1.9.3.2.
 It probably works with 1.6.X.X too, but i haven't tested it yet.
 Earlier versions of Magento won't work without changes in the extension code. 
 

@@ -33,21 +33,23 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_
      * @param Mage_CatalogSearch_Model_Query $query
      * @return Mage_CatalogSearch_Model_Mysql4_Fulltext
      */
-    public function prepareResult($object, $queryText, $query)
-    {
-			if (! Mage::getStoreConfigFlag('sphinxsearch/active/frontend')) {
-				return parent::prepareResult($object, $queryText, $query);
-			}
-		
-            $sphinx = Mage::helper('sphinxsearch')->getSphinxAdapter();
+	public function prepareResult($object, $queryText, $query)
+	{
+		if (! Mage::getStoreConfigFlag('sphinxsearch/active/frontend')) {
+			return parent::prepareResult($object, $queryText, $query);
+		}
 
-            $index = Mage::getStoreConfig('sphinxsearch/server/index');
-       		if (empty($index)) {
-                $sphinx->AddQuery($queryText);                
-            } else {
-                $sphinx->AddQuery($queryText, $index);
-            }
-            
+		$sphinx = Mage::helper('sphinxsearch')->getSphinxAdapter();
+		$foundData = array();
+
+		$index = Mage::getStoreConfig('sphinxsearch/server/index');
+
+		if (empty($index)) {
+			$sphinx->addQuery($queryText);
+		} else {
+			$sphinx->addQuery($queryText, $index);
+		}
+
             $results = $sphinx->RunQueries();
 
             // Loop through our Sphinx results
@@ -58,42 +60,49 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_
                         if (empty($item['matches']))
                                 continue;
 
-                        foreach ($item['matches'] as $doc => $docinfo)
-                        {
-                                // Ensure we log query results into the Magento table.
-                                $weight = $docinfo['weight']/1000;
-                                $sql = sprintf("INSERT INTO `%s` "
-                                                . " (`query_id`, `product_id`, `relevance`) VALUES "
-                                                . " (%d, %d, %f) "
-                                                . " ON DUPLICATE KEY UPDATE `relevance` = %f",
-                                        $resultTable,
-                                        $query->getId(),
-                                        $doc,
-                                        $weight,
-                                        $weight
-                                );
-								try {
-									$this->_getWriteAdapter()->query($sql);
-								} catch (Zend_Db_Statement_Exception $e) {
-									/*
-									 * if the sphinx index is out of date and returns
-									 * product ids which are no longer in the database
-									 * integrity contraint exceptions are thrown.
-									 * we catch them here and simply skip them.
-									 * all other exceptions are forwarded
-									 */
-									$message = $e->getMessage();
-									if (strpos($message, 'SQLSTATE[23000]: Integrity constraint violation') === FALSE) {
-										throw $e;
-									}
-								}
-                        }
-                }
-            }
-
-            $query->setIsProcessed(1);
-            return $this;
-    }
+				foreach ($item['matches'] as $doc => $docinfo)
+				{
+					// Ensure we log query results into the Magento table.
+					$weight = $docinfo['weight']/1000;
+					$foundData[$doc] = $weight;
+					$sql = sprintf("INSERT INTO `%s` "
+						. " (`query_id`, `product_id`, `relevance`) VALUES "
+						. " (%d, %d, %f) "
+						. " ON DUPLICATE KEY UPDATE `relevance` = %f",
+						$resultTable,
+						$query->getId(),
+						$doc,
+						$weight,
+						$weight
+					);
+					try {
+						$this->_getWriteAdapter()->query($sql);
+					} catch (Zend_Db_Statement_Exception $e) {
+						/*
+						 * if the sphinx index is out of date and returns
+						 * product ids which are no longer in the database
+						 * integrity contraint exceptions are thrown.
+						 * we catch them here and simply skip them.
+						 * all other exceptions are forwarded
+						 */
+						$message = $e->getMessage();
+						if (strpos($message, 'SQLSTATE[23000]: Integrity constraint violation') === FALSE) {
+							throw $e;
+						}
+					}
+				}
+			}
+		}
+		/**
+		 * Check for the existence of _foundData property for backwards
+		 * compatibility with Magento versions < 1.9.3.1.
+		 */
+		if(property_exists($this, '_foundData')){
+			$this->_foundData = $foundData;
+		}
+		$query->setIsProcessed(1);
+		return $this;
+	}
 	
     /**
      * Prepare Fulltext index value for product
