@@ -60,6 +60,10 @@
             <active>
                 <frontend>0</frontend>
                 <admin>0</admin>
+		<name_field_weight>7</name_field_weight>
+		<category_field_weight>1</category_field_weight>
+		<nameattributes_field_weight>1</nameattributes_field_weight>
+		<dataindex_field_weight>3</dataindex_field_weight>
             </active>
             <server>
                 <host>localhost</host>

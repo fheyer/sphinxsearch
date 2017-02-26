@@ -1,0 +1,14 @@
+{
+	"name": "hgati/sphinxsearch",
+	"type": "magento-module",
+	"license":"OSL-3.0",
+	"description": "sphinxsearch for my custom magento",
+
+    "extra": {
+    	"map": [
+    		["app/code/community/Gfe/SphinxSearch", "app/code/community/Gfe/SphinxSearch"],
+    		["app/etc/modules/Gfe_SphinxSearch.xml", "app/etc/modules/Gfe_SphinxSearch.xml"],
+    		["lib/SphinxClient.php", "lib/SphinxClient.php"]
+    	]
+    }
+}
