@@ -40,6 +40,7 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_
 		}
 
 		$sphinx = Mage::helper('sphinxsearch')->getSphinxAdapter();
+		$foundData = array();
 
 		$index = Mage::getStoreConfig('sphinxsearch/server/index');
 
@@ -64,6 +65,7 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_
 				{
 					// Ensure we log query results into the Magento table.
 					$weight = $docinfo['weight']/1000;
+					$foundData[$doc] = $weight;
 					$sql = sprintf("INSERT INTO `%s` "
 						. " (`query_id`, `product_id`, `relevance`) VALUES "
 						. " (%d, %d, %f) "
@@ -92,7 +94,13 @@ class Gfe_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_
 				}
 			}
 		}
-
+		/**
+		 * Check for the existence of _foundData property for backwards
+		 * compatibility with Magento versions < 1.9.3.1.
+		 */
+		if(property_exists($this, '_foundData')){
+			$this->_foundData = $foundData;
+		}
 		$query->setIsProcessed(1);
 		return $this;
 	}
