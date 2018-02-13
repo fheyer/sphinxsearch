@@ -37,9 +37,9 @@ class Gfe_SphinxSearch_Block_List extends Mage_Catalog_Block_Product_List {
             
             $index = Mage::getStoreConfig('sphinxsearch/server/index');
        		if (empty($index)) {
-                $sphinx->AddQuery(implode(' ', $words));                
+		        $sphinxServer->AddQuery(implode(' ', $words));
             } else {
-                $sphinx->AddQuery(implode(' ', $words), $index);
+		        $sphinxServer->AddQuery(implode(' ', $words), $index);
             }
             
             $results = $sphinxServer->RunQueries();
