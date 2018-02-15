@@ -34,14 +34,14 @@ class Gfe_SphinxSearch_Block_List extends Mage_Catalog_Block_Product_List {
             $words = array_filter($words, array($this, 'filterWords'));
 
             $sphinxServer = Mage::helper('sphinxsearch')->getSphinxAdapter();
-            
+
             $index = Mage::getStoreConfig('sphinxsearch/server/index');
-       		if (empty($index)) {
-		        $sphinxServer->AddQuery(implode(' ', $words));
+            if (empty($index)) {
+                $sphinxServer->AddQuery(implode(' ', $words));
             } else {
-		        $sphinxServer->AddQuery(implode(' ', $words), $index);
+                $sphinxServer->AddQuery(implode(' ', $words), $index);
             }
-            
+
             $results = $sphinxServer->RunQueries();
 
             $productIds = array();
